@@ -1,4 +1,4 @@
-/* Use element selector to seelct all p elements for this style */
+/* Use element selector to select all p elements for this style */
 
 p{
     color:greenyellow;
@@ -8,18 +8,25 @@ p{
  div {
     color:bisque
 }
+/* Ylikirjoitetaan selaimen oletusmääritys input-kentälle */
+input {
+    background-color:yellow;
+}
+
+.fancy{
+    color: green;
+    border: 2px;
+    background-color: red;
+    border-radius: 8px;
+}
+
 
 /* Use class selector to define style for elements */
 .mun_keksima{
     background-color: aquamarine;
 }
 
-.fancy{
-    color: green;
-    border: 2px;
-    background-color: aquamarine;
-    border-radius: 8px;
-}
+
 
 /* Use id selector to define style */
 /* There can't be two elements with same id because it should be unique */
@@ -27,3 +34,33 @@ p{
     margin: 100px;
     
 }
+# Selectors
+# div ja sen 1. child
+div:first-child {
+    
+}
+
+# p divin sisällä
+div p {
+    
+}
+
+# div ja sen child p
+div > p {
+    
+}
+
+# Kaikki
+
+*{
+    
+}
+
+# Luokka jonka tyylimääritys on fancy
+[class="fancy"]{
+    
+}
+
+# Attribuutin arvo alkaa https
+[attribute^="https"]
+
