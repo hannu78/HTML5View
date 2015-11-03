@@ -12,3 +12,15 @@ exports.getAllPersons = function(req, res) {
            }
     });
 }
+// saveNewPerson tallettaa uuden henkilön tiedot person-kokoelmaan
+exports.saveNewPerson = function(req, res) {
+    var personTemp = new db.Person(req.body);
+    //Tallennetaan kantaan
+    personTemp.save(function(err,ok) {
+       if (err) {
+            res.send(err.message);
+       } else {
+           res.send("Person added succesfully!");
+       }
+    });
+}

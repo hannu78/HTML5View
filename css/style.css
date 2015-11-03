@@ -1,17 +1,17 @@
 /* Use element selector to select all p elements for this style */
 
 p{
-    color:greenyellow;
-    font-size: 32px;
+    color:firebrick;
+    font-size: 20px;
 }
 
  div {
     color:bisque
 }
 /* Ylikirjoitetaan selaimen oletusmääritys input-kentälle */
-input {
+/*input {
     background-color:yellow;
-}
+} */
 
 .fancy{
     color: green;

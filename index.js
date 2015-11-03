@@ -1,6 +1,7 @@
 //Ladataan express muuttujaan
 var express = require("express");
 var path = require("path");
+var bodyParser = require("body-parser");
 //Käynnistetään express
 var app = express();
 
@@ -8,11 +9,15 @@ var database = require("./modules/database");
 var queries = require("./modules/queries");
 var person = require("./modules/person");
 //====================MIDDLEWARES==================================================
+// body-parser.json() middleware parses the json object from http POST request
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(function (req, res, next) {
     console.log(req.method);
     console.log(req.path);
+    console.log(req.body);
+    
     // Lähetä req eteenpäin pinossa
-    console.log(database.Person);
+    //console.log(database.Person);
     database.myFunction;
     next();
 });

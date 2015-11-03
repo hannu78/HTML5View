@@ -44,6 +44,7 @@ $(document).ready(function () {
                 header += "<th>" + capitalizeFirstLetter(keys[i]) + "</th>";
                 var $i = keys[i];
             } 
+            header += "<th></th>";
             $(header).appendTo("thead");
             // käydään läpi kannasta haettu taulukko ja lisätään rivit html-taulukkon riveiksi
             for (var i = 0; i < data.length; i++) {
@@ -53,14 +54,38 @@ $(document).ready(function () {
                         "<td>" + data[i].address + "</td>" +
                         "<td>" + data[i].age + "</td>" +
                         "<td>" + data[i].email + "</td>" +
+                        "<td><input type='button' id=" + data[i]._id + " value='Modify'/></td>" +
                         "</tr>";
                 $(html).appendTo("tbody");
             }
             // Lisää tyhjän rivin loppuun
             $("<tr><td></td><td></td><td></td><td></td></tr>").appendTo("tbody");
         }
+        // Lisää kaikkiin mallin button-tyyppisiin objekteihin tapahtumakäsittelijä
+        $("[type=button]").click(function(click_data){
+            console.log(click_data);
+            for (var i= 0; i< data.length; i++) {
+                //tarkista, täsmääkö button id ja person _id toisiinsa
+                if (data[i]._id == click_data.currentTarget.id) {
+                    buildModifyUI(data[i]);
+                    break;
+                } 
+            }
+            
+        });
     });
 });
+
+function buildModifyUI(person_data) {
+    var html;
+    console.log(person_data.name);
+    html = "<input type='text' value='" + person_data.name + "'</input>" +
+           "<div></div><input type ='text'value='" + person_data.address + "'</input>" +
+           "<div></div><input type ='number'value='" + person_data.age + "'</input>" +
+           "<div></div><input type ='text'value='" + person_data.email + "'</input>"; 
+        
+    $("body").html(html);
+}
 
 function domReady(event) {
     "use strict";
