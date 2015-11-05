@@ -113,6 +113,15 @@ function buildModifyUI(person_data) {
     });
 }
 
+
+$("#submit").click(function() {
+    console.log("Submit pressed");
+    $.ajax({
+        method: 'GET',
+        url: 'http://localhost:3000/'
+    }).done(function(data){location.reload(true)});
+});
+
 function domReady(event) {
     "use strict";
     return 2;
