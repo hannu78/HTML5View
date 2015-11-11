@@ -1,17 +1,17 @@
 /* Use element selector to select all p elements for this style */
 
 p{
-    color:firebrick;
+    color:blue;
     font-size: 20px;
 }
 
  div {
-    color:bisque
+    color:darkblue
 }
 /* Ylikirjoitetaan selaimen oletusmääritys input-kentälle */
-/*input {
-    background-color:yellow;
-} */
+input {
+    background-color:papayawhip;
+} 
 
 .fancy{
     color: green;
@@ -30,10 +30,21 @@ p{
 
 /* Use id selector to define style */
 /* There can't be two elements with same id because it should be unique */
-#joku_tyyli{
+#joku_tyyli {
     margin: 100px;
     
 }
+
+/* Tyylimääritys login-ikkunalle */
+.login_container {
+    width: 500px;
+    margin: 20px auto;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: skyblue;
+    padding: 10px;
+}
+
 # Selectors
 # div ja sen 1. child
 div:first-child {

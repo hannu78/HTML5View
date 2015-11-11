@@ -16,6 +16,48 @@ function capitalizeFirstLetter(string) {
 
 $(document).ready(function () {
     console.log("jQuery onload triggered");
+   // $("#emptyBtn").click(function () {
+//        console.log("Tyhjennä pressed!");
+        
+  //  });
+    $("#searchBtn").click(function() {
+        console.log("Search pressed!");
+        var text = $("#searchField").val();
+        $("#searchField").val('');
+        $.ajax({
+            method: "GET",
+            url: "http://localhost:3000/persons/name=" + text,
+        }).done(function(data){
+            console.log("Tämmöstä: " +data);
+            // Jos löytyi vähintään yksi rivi, kirjoita taulukko uusiksi niin että vain etsinnän tulos näkyy
+            if (data.length > 0) {
+              $("tbody").children().remove()
+                for (var i = 0; i < data.length; i++) {
+                // koita keksiä keino käyttää dynaamisia avaimia hardcodattujen sijaan (variable expansion)
+                var html = "<tr>" +
+                        "<td>" + data[i].name + "</td>" +
+                        "<td>" + data[i].address + "</td>" +
+                        "<td>" + data[i].age + "</td>" +
+                        "<td>" + data[i].email + "</td>" +
+                        "<td><input type='button' id=" + data[i]._id + " value='Muokkaa'/></td>" +
+                        "</tr>";
+                $(html).appendTo("tbody")
+                }
+            }
+        // Lisää kaikkiin mallin button-tyyppisiin objekteihin tapahtumakäsittelijä
+        $("[type=button]").click(function(click_data){
+            console.log("Klikattu:" + click_data);
+            for (var i= 0; i< data.length; i++) {
+                //tarkista, täsmääkö button id ja person _id toisiinsa
+                if (data[i]._id == click_data.currentTarget.id) {
+                    buildModifyUI(data[i]);
+                    break;
+                } 
+            }
+            
+        });
+        });
+   });
     
     $("#head").css("background-color", "lightblue")
         .css("padding", "20px").css("border-radius", "8px");
@@ -66,7 +108,7 @@ $(document).ready(function () {
             console.log("Klikattu:" + click_data);
             for (var i= 0; i< data.length; i++) {
                 //tarkista, täsmääkö button id ja person _id toisiinsa
-                if (data[i]._id == click_data.currentTarget.id) {
+                if(click_data.currentTarget.id == data[i]._id) {
                     buildModifyUI(data[i]);
                     break;
                 } 
@@ -78,7 +120,7 @@ $(document).ready(function () {
 
 function buildModifyUI(person_data) {
     var html;
-    console.log(person_data.name);
+    console.log("Päivitetään: " + person_data.name);
     html = "<p>Päivitä tai Poista käyttäjän tiedot.</p><div></div><div></div>" + 
            "<input id='name' type='text' value='" + person_data.name + "'</input>" +
            "<input id='address' type ='text'value='" + person_data.address + "'</input>" +
@@ -121,6 +163,7 @@ $("#submit").click(function() {
         url: 'http://localhost:3000/'
     }).done(function(data){location.reload(true)});
 });
+
 
 function domReady(event) {
     "use strict";

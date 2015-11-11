@@ -4,20 +4,24 @@ var db = require("./queries");
 var router = express.Router();
 
 // GET-requestien käsittely /persons-kontekstissa
-router.get('/', function(req, res) {
-    db.getAllPersons(req,res);
+router.get('/', function (req, res) {
+    db.getAllPersons(req, res);
+});
+router.get('/:name', function (req, res) {
+    console.log("GET:name called!")
+    db.searchByName(req, res);
 });
 // POST-requestien käsittely /persons-kontekstissa
-router.post('/', function(req, res) {
-    db.saveNewPerson(req,res);
+router.post('/', function (req, res) {
+    db.saveNewPerson(req, res);
 });
-
-router.put('/', function(req, res) {
-    db.updatePerson(req,res);
+// PUT-requestien käsittely /persons-kontekstissa
+router.put('/', function (req, res) {
+    db.updatePerson(req, res);
 });
 // DELETE-requestin käsittely /persons-kontekstissa
-router.delete('/:id', function(req, res) {
-    db.deletePerson(req,res);
+router.delete('/:id', function (req, res) {
+    db.deletePerson(req, res);
 });
 
 module.exports = router;
