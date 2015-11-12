@@ -8,9 +8,11 @@ router.get('/', function (req, res) {
     db.getAllPersons(req, res);
 });
 router.get('/:name', function (req, res) {
-    console.log("GET:name called!")
     db.searchByName(req, res);
 });
+//router.get('/:username', function (req, res) {
+//    db.getAllPersons(req, res);
+//});
 // POST-requestien käsittely /persons-kontekstissa
 router.post('/', function (req, res) {
     db.saveNewPerson(req, res);

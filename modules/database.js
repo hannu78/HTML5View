@@ -24,8 +24,8 @@ var Person = mongoose.model('Person', {
     }, 'person');
 
 //exports-objektin avulla data voidaan paljastaa muille moduleille 
-//exports.Matti = Matti;
 exports.Person = Person;
+exports.Friends = User;
 
 exports.myFunction = function() {
     console.log("This");

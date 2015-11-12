@@ -5,24 +5,24 @@ var db = require("./database");
 exports.getAllPersons = function (req, res) {
     db.Person.find(function (err, data) {
         if (err) {
-           console.log(err.message);
-           res.send("Error in database");
-           } else {
-               res.send(data);
-           }
+            console.log(err.message);
+            res.send("Error in database");
+        } else {
+            res.send(data);
+        }
     });
 }
 // saveNewPerson tallettaa uuden henkilön tiedot person-kokoelmaan
 exports.saveNewPerson = function (req, res) {
     var personTemp = new db.Person(req.body);
     //Tallennetaan kantaan
-    personTemp.save(function(err, ok) {
-       if (err) {
+    personTemp.save(function (err, ok) {
+        if (err) {
             res.send(err.message);
-       } else {
-           //res.send("Person added succesfully!");           
-           res.redirect('/');
-       }
+        } else {
+            //res.send("Person added succesfully!");           
+            res.redirect('/');
+        }
     });
 }
 // Poistetaan henkilön tiedot kannasta
@@ -30,12 +30,12 @@ exports.deletePerson = function (req, res) {
     //req.params.id on muotoa id=xxxx, jolloin pitää leikata id= pois
     var id = req.params.id.split("=")[1];
     db.Person.remove({_id: id}, function (err) {
-       if (err) {
-           res.send(err.message);
-       } else {
-           res.send("Person removed succesfully!");
-           //res.redirect('/');
-       }
+        if (err) {
+            res.send(err.message);
+        } else {
+            res.send("Person removed succesfully!");
+            //res.redirect('/');
+        }
     });
 }
 // Päivitetään henkilön tiedot
@@ -46,8 +46,8 @@ exports.updatePerson = function (req, res) {
         age: req.body.age,
         email: req.body.email
     };
-    db.Person.update({_id:req.body.id}, updateData, function(err) {
-        console.log("Here!" + req.body.name+ " " +req.body.id);
+    db.Person.update({_id: req.body.id}, updateData, function (err) {
+        console.log("Here!" + req.body.name + " " + req.body.id);
         if (err) {
             res.send(err.message);
         } else {
@@ -59,13 +59,51 @@ exports.updatePerson = function (req, res) {
 // Etsitään nimen perusteella kaikki dokumentit joiden name sisältää nimen
 exports.searchByName = function (req, res) {
     var name = req.params.name.split("=")[1];
-    console.log("HERE: " + name);
-    db.Person.find({name:{'$regex':name,'$options':'i'}}, function (err, data) {
+    //console.log("HERE: " + name);
+    db.Person.find({name: {'$regex': name, '$options': 'i'}}, function (err, data) {
         if (err) {
             res.send(err.message);
         } else {
-            console.log("Found!" + data);
+            //console.log("Found!" + data);
             res.send(data);
         }
-    }).sort( { name: 1 } );
+    }).sort({name: 1});
+}
+
+// Lisätään uusi käyttäjä
+exports.registerFriend = function (req, res) {
+    var friend = new db.Friends(req.body);
+    friend.save(function (err) {
+        if (err) {
+            res.send({status: "Kirjautuminen epäonnistui. Käytä toista käyttäjätunnusta."});
+        } else {
+            res.send({status: "Rekisteröityminen onnistui"});
+        }
+    });
+}
+// tarkistetaan onko käyttäjätunnus ja salasana jo olemassa
+exports.loginFriend = function (req, res) {
+    db.Friends.find({username: req.body.username, password: req.body.password}, function (err, data) {
+        if (err) {
+            res.send({status: err.message});
+        } else {
+            // data.length =< 0 tarkoittaa väärää username tai passwordia
+            if (data.length > 0) {
+                //console.log("Login ok!" +data);
+                res.send({status: "Ok"});
+            } else {
+                //console.log("Login feilas!");
+                res.send({status: "Väärä käyttäjätunnus tai salasana"});
+            }
+        }
+    });
+}
+// Haetaan käyttäjän ystävät friends-collectionista
+exports.getFriendsByUsername = function (req, res) {
+    var uname = req.params.username.split("=")[1];
+    db.Friends.find({username: uname}).populate("friends").exec(function (err, data) {
+        console.log(err);
+        console.log(data);
+        res.send(data.friends);
+    });
 }

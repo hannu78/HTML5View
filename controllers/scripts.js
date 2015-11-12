@@ -20,18 +20,18 @@ $(document).ready(function () {
 //        console.log("Tyhjennä pressed!");
         
   //  });
-    $("#searchBtn").click(function() {
+    $("#searchBtn").click(function () {
         console.log("Search pressed!");
         var text = $("#searchField").val();
         $("#searchField").val('');
         $.ajax({
             method: "GET",
-            url: "http://localhost:3000/persons/name=" + text,
-        }).done(function(data){
-            console.log("Tämmöstä: " +data);
+            url: "http://localhost:3000/persons/name=" + text
+        }).done(function (data) {
+            console.log("Tämmöstä: " + data);
             // Jos löytyi vähintään yksi rivi, kirjoita taulukko uusiksi niin että vain etsinnän tulos näkyy
             if (data.length > 0) {
-              $("tbody").children().remove()
+                $("tbody").children().remove();
                 for (var i = 0; i < data.length; i++) {
                 // koita keksiä keino käyttää dynaamisia avaimia hardcodattujen sijaan (variable expansion)
                 var html = "<tr>" +
@@ -41,7 +41,7 @@ $(document).ready(function () {
                         "<td>" + data[i].email + "</td>" +
                         "<td><input type='button' id=" + data[i]._id + " value='Muokkaa'/></td>" +
                         "</tr>";
-                $(html).appendTo("tbody")
+                $(html).appendTo("tbody");
                 }
             }
         // Lisää kaikkiin mallin button-tyyppisiin objekteihin tapahtumakäsittelijä
@@ -66,7 +66,8 @@ $(document).ready(function () {
     var setting = {
         method: "GET",
         //url: "http://localhost:28017/oma/person/",
-        url: "http://localhost:3000/persons",
+        url: "http://localhost:3000/friends/username=" + localStorage['username'],
+        //url: "http://localhost:3000/persons",
         dataType: "json"
         //dataType: "jsonp",
         //jsonp: "jsonp"
@@ -75,7 +76,7 @@ $(document).ready(function () {
     $.ajax(setting).done(function (data) {
         console.log(data);
         // haetaan kaikki avaimet (attribuuttien nimet) json-objektista
-        console.log(Object.keys(data[0]));
+        //console.log(Object.keys(data[0]));
         // Jos dataa on tarjolla
         if (data.length > 0) {
             // Luodaan taulukon otsikkorivi kannasta saatujen avainten perusteella
