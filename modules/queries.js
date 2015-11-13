@@ -5,7 +5,7 @@ var db = require("./database");
 exports.getAllPersons = function (req, res) {
     db.Person.find(function (err, data) {
         if (err) {
-            console.log(err.message);
+            //console.log(err.message);
             res.send("Error in database");
         } else {
             res.send(data);
@@ -20,8 +20,12 @@ exports.saveNewPerson = function (req, res) {
         if (err) {
             res.send(err.message);
         } else {
-            //res.send("Person added succesfully!");           
-            res.redirect('/');
+            db.Friends.update({username: req.body.user}, 
+                              {$push:{'friends': personTemp._id}},
+                              function(err, model){
+                      
+            res.send("Friend added");
+            });
         }
     });
 }
@@ -34,6 +38,12 @@ exports.deletePerson = function (req, res) {
             res.send(err.message);
         } else {
             res.send("Person removed succesfully!");
+            // Poista henkilö myös käyttäjän friends-listalta
+            db.Friends.update({username: req.body.user},
+                              {$pull:{'friends': id}},
+                              function(err, model) {
+                
+            });
             //res.redirect('/');
         }
     });
@@ -47,7 +57,7 @@ exports.updatePerson = function (req, res) {
         email: req.body.email
     };
     db.Person.update({_id: req.body.id}, updateData, function (err) {
-        console.log("Here!" + req.body.name + " " + req.body.id);
+        //console.log("Here!" + req.body.name + " " + req.body.id);
         if (err) {
             res.send(err.message);
         } else {
@@ -59,15 +69,21 @@ exports.updatePerson = function (req, res) {
 // Etsitään nimen perusteella kaikki dokumentit joiden name sisältää nimen
 exports.searchByName = function (req, res) {
     var name = req.params.name.split("=")[1];
-    //console.log("HERE: " + name);
-    db.Person.find({name: {'$regex': name, '$options': 'i'}}, function (err, data) {
+    var uname = req.params.username.split("=")[1];
+   // console.log("NIMI: " + name);
+    //console.log("USER: " + uname);
+    //db.Person.find({name: {'$regex': name, '$options': 'i'}}, function (err, data) {
+    db.Friends.find({username:uname}).
+        populate({path:'friends',match:{name:{'$regex': name, '$options':'i'}}}).
+            exec(function(err,data){
         if (err) {
             res.send(err.message);
         } else {
             //console.log("Found!" + data);
-            res.send(data);
+            res.send(data[0].friends);
         }
-    }).sort({name: 1});
+    });
+    //}).sort({name: 1});
 }
 
 // Lisätään uusi käyttäjä
@@ -101,9 +117,9 @@ exports.loginFriend = function (req, res) {
 // Haetaan käyttäjän ystävät friends-collectionista
 exports.getFriendsByUsername = function (req, res) {
     var uname = req.params.username.split("=")[1];
+    //console.log("User: " + uname);
     db.Friends.find({username: uname}).populate("friends").exec(function (err, data) {
-        console.log(err);
-        console.log(data);
-        res.send(data.friends);
+        //console.log("löyty: " + data[0]);
+        res.send(data[0].friends);
     });
 }

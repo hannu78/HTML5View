@@ -7,7 +7,7 @@ var router = express.Router();
 router.get('/', function (req, res) {
     db.getAllPersons(req, res);
 });
-router.get('/:name', function (req, res) {
+router.get('/:name/:username', function (req, res) {
     db.searchByName(req, res);
 });
 //router.get('/:username', function (req, res) {

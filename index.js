@@ -46,10 +46,6 @@ app.get("/css/style.css", function (req, res) {
     queries.getAllPersons(req,res);
 });*/
 
-app.get("/redirect", function(req, res) {
-   window.location.href("http://localhost:3000/persons.html") ;
-});
-
 app.get("/foobar", function (req, res) {
     res.send("Hello Foo, would you like a bar?");
 });

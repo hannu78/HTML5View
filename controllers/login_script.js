@@ -15,7 +15,7 @@ function loginHandler(event) {
         username: $("#userFld").val(),
         password: $("#pwFld").val()
     };
-    localStorage.username = $("#userFld").val();
+    //localStorage.username = $("#userFld").val();
     sessionStorage.user = $("#userFld").val();
     
     // Lähetä login-request serverille
@@ -33,7 +33,7 @@ function loginHandler(event) {
     *
 */
 function registerHandler(event) {
-    console.log("RegisterHandleria kutsuttu");
+    //console.log("RegisterHandleria kutsuttu");
     var requestData = {
         username: $("#userFld").val(),
         password: $("#pwFld").val()
@@ -65,19 +65,16 @@ function registerResponseHandler(data) {
 function loginResponseHandler(data) {
     // Jos login on ok
     if (data.status === "Ok") {
-        // Ladataan person.html
         $("#status").text("Kirjautuminen onnistui");
-        window.location.assign("http://localhost:3000/persons.html");
-        /*$.ajax({
-            method: "GET",
-            url: "http://localhost:3000/redirect"
-        }).done(renderPersonView);*/
+        // Ladataan person.html
+        //window.location.assign("http://localhost:3000/persons.html");
+        window.location= "./persons.html";
     } else {
-        $("#status").text("Kirjautuminen epäonnistui - väärä käyttäjätunnus tai salasana");
+        $("#status").text(data.status);
     }
 }
 // Ladataan person.html
 function renderPersonView(data) {
-    console.log(data);
+    //console.log(data);
     $("html").html(data);
 }

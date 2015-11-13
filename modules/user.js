@@ -15,6 +15,7 @@ var router = express.Router();
 
 // GET-requestien käsittely /friends-kontekstissa
 router.get("/:username", function (req, res) {
+   // console.log("Here!");
     db.getFriendsByUsername(req, res);
 });
 

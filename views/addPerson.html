@@ -7,39 +7,38 @@
         <link href="/css/style.css" type="text/css" rel="stylesheet">
         <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <link href="/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet">
+        <script src="../lib/jquery-2.1.4.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#sendBtn").click(function(){
+                    var data = {
+                        user: sessionStorage.user,
+                        name: $("#name").val(),
+                        address: $("#address").val(),
+                        age: $("#age").val(),
+                        email: $("#email").val()
+                    };
+                    $.ajax({
+                        method: "POST",
+                        url:"http://localhost:3000/persons",
+                        data: data,
+                    }).done(function(data){window.location= "./persons.html"});
+                });
+            });
+        </script>
     </head>
     <body>
         <h1>Lisää uudet yhteystiedot</h1>
-        <!--
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label for="inputName">Name</label>
-                <input type="text" class="form-control" id="inputName" placeholder="Your name">
-            </div>
-            <div class="form-group">
-                <label for="inputAddress">Address</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="Katukatu 1">
-            </div>
-            <div class="form-group">
-                <label for="inputAge">Age</label>
-                <input type="text" class="form-control" id="inputAge" placeholder="123">
-            </div>
-            <div class="form-group">
-                <label for="inputEmail">Email</label>
-                <input type="email" class="form-control" id="inputEmail" value="jane.doe@example.com">
-            </div>
-            <button type="submit" class="btn btn-default" onclick="readValues()">Submit</button>
-        </form>-->
-        <form method="post" enctype="application/json" action="/persons">
+        <form>
             <label for="name">Nimi</label>
-            <input type="text" required placeholder="Your full name" name="name"/><div></div>
+            <input type="text" required placeholder="Your full name" id="name"/><div></div>
             <label for="address">Osoite</label>
-            <input type="text" required placeholder="Your address" name="address"/><div></div>
+            <input type="text" required placeholder="Your address" id="address"/><div></div>
             <label for="age">Ikä</label>
-            <input type="number" required placeholder="Your age" name="age"/><div></div>
+            <input type="number" required placeholder="Your age" id="age"/><div></div>
             <label for="email">E-mail</label>
-            <input type="text" placeholder="Your e-mail" value="Not set" name="email"/><div></div>
-            <input type="submit" value="Lähetä"/>
+            <input type="text" placeholder="Your e-mail" value="Not set" id="email"/><div></div>
+            <input type="button" id="sendBtn" value="Lähetä"/>
         </form>
     </body>
 </html>
